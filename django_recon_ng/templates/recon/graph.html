@@ -1,0 +1,53 @@
+{% load staticfiles %}
+<!doctype html>
+<html>
+<head>
+  <title>Network | Basic usage</title>
+
+  <script type="text/javascript" src="{% static "js/vis.js" %}"></script>
+  <link href="{% static "css/vis-network.min.css" %}" rel="stylesheet" type="text/css" />
+
+  <style type="text/css">
+    #mynetwork {
+      width: 1024px;
+      height: 600px;
+      border: 1px solid lightgray;
+    }
+  </style>
+</head>
+<body>
+
+<p>
+  Create a simple network with some nodes and edges.
+</p>
+
+<div id="mynetwork"></div>
+
+<script type="text/javascript">
+  // create an array with nodes
+  var nodes = new vis.DataSet({{ data | safe }});
+
+  // create an array with edges
+  var edges = new vis.DataSet({{ links | safe }});
+
+  // create a network
+  var container = document.getElementById('mynetwork');
+  var data = {
+    nodes: nodes,
+    edges: edges
+  };
+  var options = {
+    interaction : {
+      multiselect: true
+    }
+  };
+  var network = new vis.Network(container, data, options);
+
+  network.on("selectNode", function (params) {
+      console.log('selectNode Event:', params);
+  });
+</script>
+
+
+</body>
+</html>
